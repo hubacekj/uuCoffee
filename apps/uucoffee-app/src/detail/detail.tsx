@@ -124,18 +124,23 @@ function Detail() {
 
   return (
     <>
+      <h3>{isCreate ? "Tvorba" : "Detail"} Receptu</h3>
       <Form className="row">
         <DetailGrid>
           <div className={styles.controlledRow}>
-            {isUpdate 
-              ? <Form.Control
+            {isUpdate ? (
+              <>
+                <h5>Jméno Receptu</h5>
+                <Form.Control
                 required
                 size="lg"
                 type="text"
                 value={detailCall.data.name}
                 onChange={(event) => UpdateData({ name: event.target.value })}
               />
-              : <>
+              </>
+            ) : (
+              <>
                 <h3 className={styles.recipeName}>{detailCall.data.name}</h3>
                 <Button
                   style={{ padding: "4px", paddingTop: "1px", marginLeft: "20%" }}
@@ -143,12 +148,13 @@ function Detail() {
                   onClick={() => callUpdate({ favorite: !detailCall.data.favorite })}>
                   <Icon size={1} path={detailCall.data.favorite ? mdiStar : mdiStarOutline} />
                 </Button>
-              </>
+              </>)
             }
 
           </div>
           <div className={styles.controlledRow}>
-            <h5>Čas přípravy: {!isUpdate && hours + "h " + minutes + "m"}</h5>{isUpdate &&
+            <h5>Čas přípravy: {!isUpdate && hours + "h " + minutes + "m"}</h5>
+            {isUpdate &&
               (<>
                 <Form.Control
                   style={{ width: 100, height: 30 }}
@@ -165,16 +171,24 @@ function Detail() {
                   } />
                 <h5>s</h5>
               </>
-              )}</div>
-          {isUpdate ?
-            (<Form.Control
-              required
-              type="textarea"
+            )}
+          </div>
+          <div className={styles.controlledRow}>
+            {isUpdate ? (
+              <>
+                <h5>Popis Receptu</h5>
+                <Form.Control
+                  as="textarea"
               value={detailCall.data.description}
-              onChange={(event) => UpdateData({ description: event.target.value })}
-            />) :
-            (<div>{detailCall.data.description}</div>)
-          }
+                  onChange={(event) =>
+                    UpdateData({ description: event.target.value })
+                  }
+                />
+              </>
+            ) : (
+              <div>{detailCall.data.description}</div>
+            )}
+          </div>
         </DetailGrid>
           
         
@@ -199,7 +213,14 @@ function Detail() {
         {<Button className={styles.buttonLeft} onClick={() => {
           navigate("/");
         }}>Zpět</Button>}
-        <Button className={styles.buttonRight} onClick={() => {
+        <Button
+          className={styles.buttonRight}
+          disabled={
+            isUpdate &&
+            (detailCall.data.name === "" ||
+              detailCall.data.ingredients.length === 0)
+          }
+          onClick={() => {
           if (isUpdate) {
             callUpdate();
           }

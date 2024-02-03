@@ -87,6 +87,7 @@ function ListGui(props) {
   }
 
   return <>
+    <h1>Seznam Receptů</h1>
     <Form className="d-flex" onSubmit={handleSearch}>
       <Form.Control
         style={{ maxWidth: "400px" }}
