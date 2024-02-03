@@ -1,39 +1,139 @@
-# Turborepo kitchen sink starter
+# uuCoffee
 
-This is an official starter Turborepo with multiple meta-frameworks all working in harmony and sharing packages.
+App for storing and managing coffee recipes.
 
-This example also shows how to use [Workspace Configurations](https://turbo.build/repo/docs/core-concepts/monorepos/configuring-workspaces).
+## uuCoffeeApp
 
-## Using this example
+### API Local Development Guide
 
-Run the following command:
+1. install dependencies
 
-```sh
-npx create-turbo@latest -e kitchen-sink
+```bash
+npm i
 ```
 
-## What's inside?
+2. add `.env` file to the root of the server project by the .env.dist template
 
-This Turborepo includes the following packages and apps:
+```bash
+cp .env.dist .env
+```
 
-### Apps and Packages
+3. for local development, change the `VITE_API_URL` variable in the `.env` file to your local server url, otherwise leave the default
 
-- `api`: an [Express](https://expressjs.com/) server
-- `storefront`: a [Next.js](https://nextjs.org/) app
-- `admin`: a [Vite](https://vitejs.dev/) single page app
-- `blog`: a [Remix](https://remix.run/) blog
-- `@repo/logger`: isomorphic logger (a small wrapper around console.log)
-- `@repo/ui`: a dummy React UI library (which contains a single `<CounterButton>` component)
-- `scripts`: Jest and ESLint configurations
-- `@repo/typescript-config`: tsconfig.json's used throughout the monorepo
+4. run the app locally by running the following command in the root of the repository
 
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
+```bash
+npm run dev
+```
 
-### Utilities
+## uuCoffeeApi
 
-This Turborepo has some additional tools already setup for you:
+Backend API documentation for the uuCoffee application.
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Jest](https://jestjs.io) test runner for all things JavaScript
-- [Prettier](https://prettier.io) for code formatting
+### Routes
+
+#### Ingredients
+
+- GET /api/ingredients
+
+  - gets all ingredients as JSON array
+
+- GET /api/ingredients/:id
+
+  - gets one ingredient by its id
+
+- POST /api/ingredients
+
+  - inserts one ingredient and returns it
+  - body must be a JSON object with all required properties, id is ignored
+
+- PUT /api/ingredients/:id
+
+  - updates an ingredient by its id and returns it
+  - body must be a JSON object with properties to be updated
+  - no required properties, id is ignored
+
+- DELETE /api/ingredients/:id
+  - deletes an ingredient by its id, empty response
+  - body is ignored
+
+#### Recipes
+
+- GET /api/recipes
+
+  - gets all recipes as JSON array
+
+- GET /api/recipes/:id
+
+  - gets one recipe by its id
+
+- POST /api/recipes
+
+  - inserts one recipe and returns it
+  - body must be a JSON object with all required properties, id is ignored
+
+- PUT /api/recipes/:id
+
+  - updates a recipe by its id and returns it
+  - body must be a JSON object with properties to be updated
+  - no required properties, id is ignored
+
+- DELETE /api/recipes/:id
+  - deletes a recipe by its id, empty response
+  - body is ignored
+
+---
+
+### Entities
+
+#### Ingredients
+
+| Property | Type                 | Required | Default       | Notes       |
+| -------- | -------------------- | -------- | ------------- | ----------- |
+| id       | number               | true     | autoincrement | Primary key |
+| name     | string               | true     |               | unique      |
+| unit     | string               | true     |               |             |
+| recipes  | {recipeId: number}[] | false    |               | foreign key |
+
+#### Recipes
+
+| Property        | Type                                     | Required | Default       | Notes                                   |
+| --------------- | ---------------------------------------- | -------- | ------------- | --------------------------------------- |
+| id              | number                                   | true     | autoincrement | Primary key                             |
+| name            | string                                   | true     |               | unique                                  |
+| description     | string                                   | true     |               |                                         |
+| imageUrl        | string                                   | false    |               |                                         |
+| favorite        | boolean                                  | false    | false         |                                         |
+| portionAmount   | number                                   | true     |               | in mililiters                           |
+| preparationTime | number                                   | true     |               | in minutes                              |
+| ingredients     | {ingredientId: number, amount: number}[] | false    |               | foreign key, amount in ingredient units |
+
+---
+
+### API Local Development Guide
+
+1. install dependencies
+
+```bash
+npm i
+```
+
+2. add `.env` file to the root of the server project by the .env.dist template
+
+```bash
+cp .env.dist .env
+```
+
+3. change the `DATABASE_URL` variable in the `.env` file to your local database url
+
+4. run db migration
+
+```bash
+npm run drizzle:migrate
+```
+
+5. run the server locally by running the following command in the root of the repository
+
+```bash
+npm run dev
+```

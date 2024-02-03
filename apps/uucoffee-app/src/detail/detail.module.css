@@ -1,0 +1,52 @@
+.loading {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error {
+  background-color: lightpink;
+  padding: 32px;
+}
+
+.detailGrid {
+  padding-bottom: 16px;
+  border: 1px outset;
+  border-radius: 7px;
+}
+
+.buttonRow {
+  bottom: 0%;
+  position: fixed;
+  padding-bottom: 8px;
+  background-color: lightgray;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+}
+
+.buttonRight {
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 10px;
+  float: right;
+  width: 80px;
+}
+.buttonLeft {
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 10px;
+  float: left;
+  width: 80px;
+}
+
+.controlledRow {
+  display: flex;
+  align-content: start;
+}
+
+.recipeName {
+  width: 80%;
+}

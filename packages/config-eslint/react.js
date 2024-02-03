@@ -1,4 +1,4 @@
-const { resolve } = require("node:path");
+import resolve from "node:path";
 
 const project = resolve(process.cwd(), "tsconfig.json");
 
@@ -11,7 +11,7 @@ const project = resolve(process.cwd(), "tsconfig.json");
  *
  */
 
-module.exports = {
+export const config = {
   extends: [
     "@vercel/style-guide/eslint/browser",
     "@vercel/style-guide/eslint/typescript",
@@ -31,7 +31,7 @@ module.exports = {
       },
     },
   },
-  ignorePatterns: ["node_modules/", "dist/", ".eslintrc.js", "**/*.css"],
+  ignorePatterns: ["node_modules/", "dist/", ".eslintrc.js", "**/*.css", "vite.config.ts"],
   // add rules configurations here
   rules: {
     "import/no-default-export": "off",
