@@ -77,7 +77,7 @@ function IngredientList(props) {
   return (
     <>
       <div className={styles.controlledRow} >
-        Počet porcí: {plusButton}<b>{props.isUpdate ? (<FormControl type="number" value={props.portionAmount} onChange={(event) => props.updatePortionAmount(event.target.value <= 1 ? 1 : parseInt(event.target.value))} />) : (props.portionAmount * portionMultiplier)}</b>{minusButton}
+        Počet porcí: {plusButton}<b>{portionMultiplier}</b>{minusButton}Objem porce: {props.isUpdate ? (<FormControl type="number" value={props.portionAmount} onChange={(event) => props.updatePortionAmount(parseInt(event.target.value) <= 1 ? 1 : parseInt(event.target.value))} />) : (props.portionAmount)} ml
       </div>
       <Table>
         <thead>
