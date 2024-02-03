@@ -1,7 +1,13 @@
+DO $$ BEGIN
+ CREATE TYPE "unit" AS ENUM('grams', 'mililiters');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "ingredients" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
-	"unit" text NOT NULL,
+	"unit" "unit" NOT NULL,
 	CONSTRAINT "ingredients_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
@@ -16,7 +22,6 @@ CREATE TABLE IF NOT EXISTS "recipes" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"description" text NOT NULL,
-	"imageUrl" text,
 	"favorite" boolean DEFAULT false NOT NULL,
 	"portionAmount" integer NOT NULL,
 	"preparationTime" integer NOT NULL,

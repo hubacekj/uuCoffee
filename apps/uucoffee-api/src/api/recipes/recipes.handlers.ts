@@ -59,42 +59,39 @@ export async function createOne(
       throw new Error(`Recipe with name "${rest.name}" already exists.`);
     }
 
-    if (recipeIngredientList) {
-      const recipeIngredientsThatDontExist = await filterAsync(recipeIngredientList, async (recipeIngredient) => {
-        const [ingredientRecord] = await db
-          .select()
-          .from(ingredients)
-          .where(eq(ingredients.id, recipeIngredient.ingredientId));
+    const recipeIngredientsThatDontExist = await filterAsync(recipeIngredientList, async (recipeIngredient) => {
+      const [ingredientRecord] = await db
+        .select()
+        .from(ingredients)
+        .where(eq(ingredients.id, recipeIngredient.ingredientId));
 
-        return ingredientRecord === undefined;
-      });
+      return ingredientRecord === undefined;
+    });
 
-      if (recipeIngredientsThatDontExist.length > 0) {
-        const idsString = recipeIngredientsThatDontExist
-          .map((recipeIngredient) => recipeIngredient.ingredientId).join(', ');
+    if (recipeIngredientsThatDontExist.length > 0) {
+      const idsString = recipeIngredientsThatDontExist
+        .map((recipeIngredient) => recipeIngredient.ingredientId).join(', ');
 
-        res.status(404);
-        throw new Error(
-          `Ingredients with ids ${idsString} not found.`,
-        );
-      }
+      res.status(404);
+      throw new Error(
+        `Ingredients with ids ${idsString} not found.`,
+      );
     }
+
 
     const [insertedRecipe] = await db.insert(recipes).values({ ...rest }).returning();
 
     if (!insertedRecipe) {
-      res.status(404);
+      res.status(500);
       throw new Error('Unable to create recipe.');
     }
 
-    if (recipeIngredientList) {
-      const recipeIngredientsToInsert = recipeIngredientList.map((recipeIngredient) => ({
-        ...recipeIngredient,
-        recipeId: insertedRecipe.id,
-      }));
+    const recipeIngredientsToInsert = recipeIngredientList.map((recipeIngredient) => ({
+      ...recipeIngredient,
+      recipeId: insertedRecipe.id,
+    }));
 
-      await db.insert(recipeIngredients).values(recipeIngredientsToInsert);
-    }
+    await db.insert(recipeIngredients).values(recipeIngredientsToInsert);
 
     const [insertedRecipeWithIngredients] = await db.query.recipes.findMany({
       where: eq(recipes.id, insertedRecipe.id),

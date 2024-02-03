@@ -5,6 +5,7 @@ import {
   text,
   pgTable,
   primaryKey,
+  pgEnum,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -12,16 +13,17 @@ export const recipes = pgTable('recipes', {
   id: serial('id').primaryKey(),
   name: text('name').notNull().unique(),
   description: text('description').notNull(),
-  imageUrl: text('imageUrl'),
   favorite: boolean('favorite').default(false).notNull(),
   portionAmount: integer('portionAmount').notNull(),
   preparationTime: integer('preparationTime').notNull(),
 });
 
+export const unitEnum = pgEnum('unit', ['grams', 'mililiters']);
+
 export const ingredients = pgTable('ingredients', {
   id: serial('id').primaryKey(),
   name: text('name').notNull().unique(),
-  unit: text('unit').notNull(),
+  unit: unitEnum('unit').notNull(),
 });
 
 export const recipeIngredients = pgTable(

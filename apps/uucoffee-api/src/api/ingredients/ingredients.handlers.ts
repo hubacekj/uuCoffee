@@ -50,6 +50,7 @@ export async function createOne(
     const [ingredientWithName] = await db.select().from(ingredients).where(eq(ingredients.name, name));
 
     if (ingredientWithName) {
+      res.status(409);
       throw new Error(`Ingredient with name "${name}" already exists.`);
     }
 
@@ -59,7 +60,7 @@ export async function createOne(
       .returning();
 
     if (!insertedIngredient) {
-      res.status(404);
+      res.status(500);
       throw new Error('Unable to create ingredient.');
     }
 
@@ -109,6 +110,7 @@ export async function updateOne(
       const [ingredientWithName] = await db.select().from(ingredients).where(eq(ingredients.name, req.body.name));
 
       if (ingredientWithName && ingredientWithName.id !== paramId) {
+        res.status(409)
         throw new Error(`Unable to update ingredient with name "${req.body.name}" that already exists.`);
       }
     }

@@ -1,5 +1,5 @@
 {
-  "id": "049071b9-f3ac-4477-8a59-2b6a56a7abc7",
+  "id": "f55f7b70-6b15-46c2-a38f-293fb19a9f2d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -22,7 +22,7 @@
         },
         "unit": {
           "name": "unit",
-          "type": "text",
+          "type": "unit",
           "primaryKey": false,
           "notNull": true
         }
@@ -125,12 +125,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "imageUrl": {
-          "name": "imageUrl",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
         "favorite": {
           "name": "favorite",
           "type": "boolean",
@@ -165,7 +159,15 @@
       }
     }
   },
-  "enums": {},
+  "enums": {
+    "unit": {
+      "name": "unit",
+      "values": {
+        "grams": "grams",
+        "mililiters": "mililiters"
+      }
+    }
+  },
   "schemas": {},
   "_meta": {
     "columns": {},
