@@ -98,7 +98,7 @@ function ListGui(props) {
         onChange={handleSearchDelete}
       />
       <Form.Select name="ingredientInput">
-        <option value="-1">Přidat ingredienci</option>
+        <option value="-1">Filtrovat podle ingredience</option>
         {ingredientOptions}
       </Form.Select>
       <Button style={{ marginRight: "8px" }} variant="outline-success" type="submit">
