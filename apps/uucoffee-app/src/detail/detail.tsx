@@ -191,13 +191,6 @@ function Detail() {
           </div>
         </DetailGrid>
           
-        
-        {/* možná bude odstraněno zítra */}
-        {detailCall.data.imageUrl != "" && (
-          <DetailGrid>
-            <img src={detailCall.data.imageUrl} ></img >
-          </DetailGrid>
-        )}
         <DetailGrid>
           <IngredientList
             isUpdate={isUpdate}
@@ -229,16 +222,24 @@ function Detail() {
           }
           setUpdate(!isUpdate);
         }}>{isUpdate ? "Uložit" : "Upravit"}</Button>
-        {(isUpdate && !isCreate) && (<Button className={styles.buttonRight} onClick={() => {
-          if (isCreate) {
-            navigate("/");
-          }
-          else {
-            setDetailCall({ ...detailCall, data: detailCall.oldData, oldData: undefined })
-            setUpdate(false)
-          }
-        }}>Zrušit</Button>)}
-        {(!isUpdate) && (<Button  className={styles.buttonRight}
+        {isUpdate && !isCreate && (
+          <Button
+            className={styles.buttonRight}
+            onClick={() => {
+              setDetailCall({
+                ...detailCall,
+                data: detailCall.oldData,
+                oldData: undefined,
+              });
+              setUpdate(false);
+            }}
+          >
+            Zrušit
+          </Button>
+        )}
+        {!isUpdate && (
+          <Button
+            className={styles.buttonRight}
         variant="danger"
          onClick={() => {
           fetch(`${import.meta.env.VITE_API_URL}/api/recipes/${id}`, {
