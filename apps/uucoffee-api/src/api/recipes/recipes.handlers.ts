@@ -176,7 +176,7 @@ export async function deleteOne(
   try {
     const paramId = Number(req.params.id);
 
-    const recipeToBeDeleted = recipesDao.getRecipeById(paramId);
+    const recipeToBeDeleted = await recipesDao.getRecipeById(paramId);
 
     if (!recipeToBeDeleted) {
       res.status(404);
