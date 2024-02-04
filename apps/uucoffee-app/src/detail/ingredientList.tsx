@@ -92,7 +92,7 @@ function IngredientList(props) {
           {
             props.ingredients.map((ingredient, index) => {
               //format prep time
-              const ingData = ingredientCall.data[ingredient.ingredientId - 1];
+              const ingData = ingredientCall.data.filter(ing => ing.id === ingredient.ingredientId)[0];
               const amount = (props.isUpdate ? <FormControl type="number" value={ingredient.amount} onChange={(event) => props.updateFunction(index, { amount: event.target.value <= 1 ? 1 : parseInt(event.target.value)})} /> : ingredient.amount * portionMultiplier);
               return (
                 <tr key={ingredient.ingredientId}>
