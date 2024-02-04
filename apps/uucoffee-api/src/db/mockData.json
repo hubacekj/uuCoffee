@@ -1,0 +1,497 @@
+{
+  "ingredients": [
+    {
+      "name": "mléko",
+      "unit": "mililiters"
+    },
+    {
+      "name": "espresso",
+      "unit": "mililiters"
+    },
+    {
+      "name": "skořice",
+      "unit": "grams"
+    },
+    {
+      "name": "kakao",
+      "unit": "grams"
+    },
+    {
+      "name": "irská whiskey",
+      "unit": "mililiters"
+    },
+    {
+      "name": "hnědý cukr",
+      "unit": "grams"
+    },
+    {
+      "name": "šlehačka",
+      "unit": "mililiters"
+    },
+    {
+      "name": "led",
+      "unit": "grams"
+    },
+    {
+      "name": "cukr",
+      "unit": "grams"
+    },
+    {
+      "name": "instantní káva",
+      "unit": "grams"
+    },
+    {
+      "name": "čokoláda",
+      "unit": "grams"
+    },
+    {
+      "name": "vanilková zmrzlina",
+      "unit": "grams"
+    },
+    {
+      "name": "karamelový sirup",
+      "unit": "mililiters"
+    },
+    {
+      "name": "karamelová poleva",
+      "unit": "mililiters"
+    },
+    {
+      "name": "máslo",
+      "unit": "grams"
+    },
+    {
+      "name": "kokosový olej",
+      "unit": "mililiters"
+    },
+    {
+      "name": "hřebíček",
+      "unit": "grams"
+    },
+    {
+      "name": "kardamom",
+      "unit": "grams"
+    },
+    {
+      "name": "anýz",
+      "unit": "grams"
+    },
+    {
+      "name": "likér",
+      "unit": "mililiters"
+    },
+    {
+      "name": "vanilkový extrakt",
+      "unit": "mililiters"
+    },
+    {
+      "name": "med",
+      "unit": "mililiters"
+    },
+    {
+      "name": "citron",
+      "unit": "grams"
+    }
+  ],
+  "recipes": [
+    {
+      "name": "Cappuccino",
+      "description": "Do šálku nalijte horké mléko a napěňte ho pomocí parní trysky nebo ručního pěniče. Do jiného šálku připravte silný espresso. Pomalu nalijte espresso do šálku s mlékem tak, aby se vytvořila hnědá vrstva. Posypte vrchol skořicí nebo kakaem podle chuti.",
+      "favorite": true,
+      "portionAmount": 180,
+      "preparationTime": 120,
+      "ingredients": [
+        {
+          "ingredientId": 1,
+          "amount": 120
+        },
+        {
+          "ingredientId": 2,
+          "amount": 60
+        },
+        {
+          "ingredientId": 3,
+          "amount": 1
+        },
+        {
+          "ingredientId": 4,
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "name": "Latte macchiato",
+      "description": "Do vysoké sklenice nalijte horké mléko a napěňte ho pomocí parní trysky nebo ručního pěniče. Pomalu nalijte espresso do středu sklenice tak, aby se vytvořily tři vrstvy: bílá, hnědá a pěnová. Podávejte s dlouhou lžičkou.",
+      "favorite": true,
+      "portionAmount": 240,
+      "preparationTime": 150,
+      "ingredients": [
+        {
+          "ingredientId": 1,
+          "amount": 180
+        },
+        {
+          "ingredientId": 2,
+          "amount": 60
+        }
+      ]
+    },
+    {
+      "name": "Irská káva",
+      "description": "Do ohřátého sklenice nalijte irskou whiskey a trochu hnědého cukru. Zapalte whiskey a nechte ji hořet pár sekund, pak zhasněte plamen. Přidejte horký silný kávový nápoj a promíchejte. Na vrchol nalijte šlehačku tak, aby nepropadla do kávy. Podávejte s brčkem.",
+      "favorite": true,
+      "portionAmount": 200,
+      "preparationTime": 180,
+      "ingredients": [
+        {
+          "ingredientId": 5,
+          "amount": 40
+        },
+        {
+          "ingredientId": 6,
+          "amount": 10
+        },
+        {
+          "ingredientId": 2,
+          "amount": 150
+        },
+        {
+          "ingredientId": 7,
+          "amount": 50
+        }
+      ]
+    },
+    {
+      "name": "Ledová káva",
+      "description": "Do mixéru dejte led, mléko, cukr a instantní kávu. Mixujte, dokud nevznikne hustá pěna. Nalijte do velké sklenice a podávejte s brčkem a šlehačkou podle chuti.",
+      "favorite": false,
+      "portionAmount": 300,
+      "preparationTime": 60,
+      "ingredients": [
+        {
+          "ingredientId": 8,
+          "amount": 100
+        },
+        {
+          "ingredientId": 1,
+          "amount": 150
+        },
+        {
+          "ingredientId": 9,
+          "amount": 20
+        },
+        {
+          "ingredientId": 10,
+          "amount": 10
+        },
+        {
+          "ingredientId": 7,
+          "amount": 50
+        }
+      ]
+    },
+    {
+      "name": "Mocha",
+      "description": "Do malého hrnce dejte mléko, čokoládu a cukr. Zahřívejte za stálého míchání, dokud se čokoláda nerozpustí a mléko nezačne vařit. Odstraňte z ohně a nalijte do šálku. Přidejte espresso a promíchejte. Ozdobte šlehačkou a čokoládovými hoblinami.",
+      "favorite": false,
+      "portionAmount": 240,
+      "preparationTime": 180,
+      "ingredients": [
+        {
+          "ingredientId": 1,
+          "amount": 180
+        },
+        {
+          "ingredientId": 11,
+          "amount": 20
+        },
+        {
+          "ingredientId": 9,
+          "amount": 10
+        },
+        {
+          "ingredientId": 2,
+          "amount": 60
+        },
+        {
+          "ingredientId": 7,
+          "amount": 50
+        }
+      ]
+    },
+    {
+      "name": "Flat white",
+      "description": "Do šálku připravte silný espresso. Do malého hrnce nalijte mléko a zahřívejte ho za stálého míchání, dokud se nevytvoří jemná pěna. Nalijte mléko do šálku s espressem tak, aby se vytvořila hladká bílá vrstva. Podávejte s cukrem podle chuti.",
+      "favorite": false,
+      "portionAmount": 180,
+      "preparationTime": 120,
+      "ingredients": [
+        {
+          "ingredientId": 2,
+          "amount": 60
+        },
+        {
+          "ingredientId": 1,
+          "amount": 120
+        },
+        {
+          "ingredientId": 9,
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "name": "Affogato",
+      "description": "Do malé misky dejte kopeček vanilkové zmrzliny. Připravte si silný espresso a nalijte ho přes zmrzlinu. Podávejte ihned s lžičkou.",
+      "favorite": false,
+      "portionAmount": 120,
+      "preparationTime": 60,
+      "ingredients": [
+        {
+          "ingredientId": 12,
+          "amount": 50
+        },
+        {
+          "ingredientId": 2,
+          "amount": 60
+        }
+      ]
+    },
+    {
+      "name": "Karamelové frappé",
+      "description": "Do mixéru dejte led, mléko, instantní kávu, karamelový sirup a cukr. Mixujte, dokud nevznikne hustá pěna. Nalijte do velké sklenice a ozdobte šlehačkou a karamelovou polevou.",
+      "favorite": false,
+      "portionAmount": 360,
+      "preparationTime": 90,
+      "ingredients": [
+        {
+          "ingredientId": 8,
+          "amount": 100
+        },
+        {
+          "ingredientId": 1,
+          "amount": 150
+        },
+        {
+          "ingredientId": 10,
+          "amount": 10
+        },
+        {
+          "ingredientId": 13,
+          "amount": 30
+        },
+        {
+          "ingredientId": 9,
+          "amount": 20
+        },
+        {
+          "ingredientId": 7,
+          "amount": 50
+        },
+        {
+          "ingredientId": 14,
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "name": "Vídeňská káva",
+      "description": "Do šálku připravte silný kávový nápoj. Na vrchol nalijte šlehačku tak, aby vytvořila kopcovitou vrstvu. Posypte čokoládovým práškem nebo kakaem podle chuti. Podávejte s lžičkou.",
+      "favorite": false,
+      "portionAmount": 180,
+      "preparationTime": 90,
+      "ingredients": [
+        {
+          "ingredientId": 2,
+          "amount": 150
+        },
+        {
+          "ingredientId": 7,
+          "amount": 50
+        },
+        {
+          "ingredientId": 11,
+          "amount": 5
+        },
+        {
+          "ingredientId": 4,
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "name": "Espresso macchiato",
+      "description": "Do malého šálku připravte silný espresso. Do malého hrníčku nalijte mléko a napěňte ho pomocí parní trysky nebo ručního pěniče. Lžičkou přidejte trochu mléčné pěny na vrchol espressa. Podávejte s cukrem podle chuti.",
+      "favorite": false,
+      "portionAmount": 60,
+      "preparationTime": 60,
+      "ingredients": [
+        {
+          "ingredientId": 2,
+          "amount": 50
+        },
+        {
+          "ingredientId": 1,
+          "amount": 10
+        },
+        {
+          "ingredientId": 9,
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "name": "Káva s máslem",
+      "description": "Do mixéru dejte horkou vodu, instantní kávu, máslo a kokosový olej. Mixujte, dokud nevznikne jemná emulze. Nalijte do šálku a podávejte s cukrem nebo medem podle chuti.",
+      "favorite": false,
+      "portionAmount": 240,
+      "preparationTime": 90,
+      "ingredients": [
+        {
+          "ingredientId": 15,
+          "amount": 10
+        },
+        {
+          "ingredientId": 16,
+          "amount": 10
+        },
+        {
+          "ingredientId": 10,
+          "amount": 10
+        },
+        {
+          "ingredientId": 9,
+          "amount": 10
+        },
+        {
+          "ingredientId": 17,
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "name": "Káva s kořením",
+      "description": "Do malého hrnce nalijte vodu, přidejte skořici, hřebíček, kardamom a anýz. Přiveďte k varu a nechte louhovat 10 minut. Přeceďte a nalijte do šálku. Přidejte instantní kávu a cukr podle chuti. Promíchejte a podávejte s mlékem nebo šlehačkou podle chuti.",
+      "favorite": false,
+      "portionAmount": 240,
+      "preparationTime": 600,
+      "ingredients": [
+        {
+          "ingredientId": 3,
+          "amount": 2
+        },
+        {
+          "ingredientId": 18,
+          "amount": 2
+        },
+        {
+          "ingredientId": 19,
+          "amount": 2
+        },
+        {
+          "ingredientId": 20,
+          "amount": 2
+        },
+        {
+          "ingredientId": 10,
+          "amount": 10
+        },
+        {
+          "ingredientId": 9,
+          "amount": 10
+        },
+        {
+          "ingredientId": 1,
+          "amount": 50
+        },
+        {
+          "ingredientId": 7,
+          "amount": 50
+        }
+      ]
+    },
+    {
+      "name": "Káva s likérem",
+      "description": "Do šálku nalijte horkou vodu a přidejte instantní kávu a cukr podle chuti. Promíchejte a přilijte likér podle chuti. Ozdobte šlehačkou a čokoládovými hoblinami. Podávejte s brčkem.",
+      "favorite": false,
+      "portionAmount": 180,
+      "preparationTime": 90,
+      "ingredients": [
+        {
+          "ingredientId": 21,
+          "amount": 30
+        },
+        {
+          "ingredientId": 10,
+          "amount": 10
+        },
+        {
+          "ingredientId": 9,
+          "amount": 10
+        },
+        {
+          "ingredientId": 7,
+          "amount": 50
+        },
+        {
+          "ingredientId": 11,
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "name": "Káva s ledovou tříští",
+      "description": "Do mixéru dejte led, mléko, instantní kávu, cukr a vanilkový extrakt. Mixujte, dokud nevznikne hustá pěna. Nalijte do velké sklenice a podávejte s brčkem a šlehačkou podle chuti.",
+      "favorite": false,
+      "portionAmount": 300,
+      "preparationTime": 60,
+      "ingredients": [
+        {
+          "ingredientId": 8,
+          "amount": 100
+        },
+        {
+          "ingredientId": 1,
+          "amount": 150
+        },
+        {
+          "ingredientId": 10,
+          "amount": 10
+        },
+        {
+          "ingredientId": 9,
+          "amount": 20
+        },
+        {
+          "ingredientId": 22,
+          "amount": 5
+        },
+        {
+          "ingredientId": 7,
+          "amount": 50
+        }
+      ]
+    },
+    {
+      "name": "Káva s medem a citronem",
+      "description": "Do šálku nalijte horkou vodu a přidejte instantní kávu a med podle chuti. Promíchejte a přidejte šťávu z poloviny citronu. Podávejte s plátkem citronu.",
+      "favorite": false,
+      "portionAmount": 240,
+      "preparationTime": 60,
+      "ingredients": [
+        {
+          "ingredientId": 10,
+          "amount": 10
+        },
+        {
+          "ingredientId": 17,
+          "amount": 20
+        },
+        {
+          "ingredientId": 23,
+          "amount": 50
+        }
+      ]
+    }
+  ]
+}

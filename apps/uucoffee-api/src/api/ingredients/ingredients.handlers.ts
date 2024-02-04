@@ -1,21 +1,17 @@
 import type {
   Response, Request, NextFunction,
 } from 'express';
-import { eq } from 'drizzle-orm';
-
 import type {
   ParamWithId,
   EmptyObject,
 } from '../../types';
-import {
-  ingredients, recipeIngredients,
-} from '../../db/schema';
-import { db } from '../../db';
 import type {
   InsertIngredientType,
   UpdateIngredientType,
   Ingredient,
 } from './ingredients.models';
+import { ingredientsDao } from './ingredients.dao';
+import { recipeIngredientsDao } from '../recipeIngredients/recipeIngredients.dao';
 
 export async function findAll(
   _: Request,
@@ -23,15 +19,7 @@ export async function findAll(
   next: NextFunction,
 ) {
   try {
-    const allIngredients = await db.query.ingredients.findMany({
-      with: {
-        recipes: {
-          columns: {
-            recipeId: true,
-          },
-        },
-      },
-    });
+    const allIngredients = await ingredientsDao.getAllIngredients();
 
     res.json(allIngredients);
   } catch (error) {
@@ -47,21 +35,18 @@ export async function createOne(
   try {
     const { name } = req.body;
 
-    const [ingredientWithName] = await db.select().from(ingredients).where(eq(ingredients.name, name));
+    const ingredientWithName = await ingredientsDao.getIngredientByName(name);
 
     if (ingredientWithName) {
       res.status(409);
       throw new Error(`Ingredient with name "${name}" already exists.`);
     }
 
-    const [insertedIngredient] = await db
-      .insert(ingredients)
-      .values({ ...req.body })
-      .returning();
+    const insertedIngredient = await ingredientsDao.createIngredient(req.body)
 
     if (!insertedIngredient) {
       res.status(500);
-      throw new Error('Unable to create ingredient.');
+      throw new Error('Unable to create ingredient. Try again later.');
     }
 
     res.json(insertedIngredient);
@@ -78,14 +63,14 @@ export async function findOne(
   try {
     const paramId = Number(req.params.id);
 
-    const [result] = await db.select().from(ingredients).where(eq(ingredients.id, paramId));
+    const ingredient = await ingredientsDao.getIngredientById(paramId);
 
-    if (!result) {
+    if (!ingredient) {
       res.status(404);
       throw new Error(`Ingredient with id "${paramId}" not found.`);
     }
 
-    res.json(result);
+    res.json(ingredient);
   } catch (error) {
     next(error);
   }
@@ -98,28 +83,35 @@ export async function updateOne(
 ) {
   try {
     const paramId = Number(req.params.id);
+    const { name, unit } = req.body;
 
-    const [ingredientToBeUpdated] = await db.select().from(ingredients).where(eq(ingredients.id, paramId));
+    if (!name && !unit) {
+      res.status(400)
+      throw new Error(`No values to update.`)
+    }
+
+    const ingredientToBeUpdated = await ingredientsDao.getIngredientById(paramId);
 
     if (!ingredientToBeUpdated) {
       res.status(404);
       throw new Error(`Ingredient with id "${paramId}" not found.`);
     }
 
-    if (req.body.name) {
-      const [ingredientWithName] = await db.select().from(ingredients).where(eq(ingredients.name, req.body.name));
+    if (name) {
+      const ingredientWithName = await ingredientsDao.getIngredientByName(name);
 
       if (ingredientWithName && ingredientWithName.id !== paramId) {
         res.status(409)
-        throw new Error(`Unable to update ingredient with name "${req.body.name}" that already exists.`);
+        throw new Error(`Unable to update ingredient with name "${name}" that already exists.`);
       }
     }
 
-    const [updatedIngredient] = await db
-      .update(ingredients)
-      .set({ ...req.body })
-      .where(eq(ingredients.id, paramId))
-      .returning();
+    const updatedIngredient = await ingredientsDao.updateIngredientById(req.body, paramId);
+
+    if (!updatedIngredient) {
+      res.status(500);
+      throw new Error(`Unable to update ingredient with id ${paramId}. Try again later.`)
+    }
 
     res.json(updatedIngredient);
   } catch (error) {
@@ -135,16 +127,16 @@ export async function deleteOne(
   try {
     const paramId = Number(req.params.id);
 
-    const [toBeDeletedIngredient] = await db.select().from(ingredients).where(eq(ingredients.id, paramId));
+    const toBeDeletedIngredient = await ingredientsDao.getIngredientById(paramId);
 
     if (!toBeDeletedIngredient) {
       res.status(404);
       throw new Error(`Ingredient with id "${paramId}" not found.`);
     }
 
-    await db.delete(recipeIngredients).where(eq(recipeIngredients.ingredientId, paramId));
+    await recipeIngredientsDao.deleteRecipeIngredientByIngredientId(paramId);
 
-    await db.delete(ingredients).where(eq(ingredients.id, paramId));
+    await ingredientsDao.deleteIngredientById(paramId);
 
     res.status(204).json();
   } catch (error) {

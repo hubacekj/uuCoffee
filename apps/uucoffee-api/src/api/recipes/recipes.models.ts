@@ -1,23 +1,10 @@
 import {
-  createInsertSchema, createSelectSchema,
+  createInsertSchema,
+  createSelectSchema,
 } from 'drizzle-zod';
 import { z } from 'zod';
-import {
-  recipes, recipeIngredients,
-} from '../../db/schema';
-
-export const RecipeIngredientRelationSchema = createSelectSchema(recipeIngredients);
-export const RecipeIngredientSchema = RecipeIngredientRelationSchema
-  .omit({ recipeId: true })
-  .extend({
-    amount: z.number({ 'required_error': 'Ingredient amount is required.' }),
-    ingredientId: z
-      .number({ 'required_error': 'Ingredient id is required.' })
-      .positive('Ingredient id must be a positive integer.')
-      .int('Ingredient id must be an integer.')
-  });
-export type RecipeIngredientRelation = z.infer<typeof RecipeIngredientRelationSchema>;
-export type RecipeIngredient = z.infer<typeof RecipeIngredientSchema>;
+import { recipes } from '../../db/schema';
+import { RecipeIngredientSchema } from '../recipeIngredients/recipeIngredients.models';
 
 export const RecipeSchema = createSelectSchema(recipes);
 export const InsertRecipeWithIdSchema = createInsertSchema(recipes);

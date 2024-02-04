@@ -7,6 +7,7 @@
     "dev": "tsup --watch --onSuccess \"node dist/index.js\"",
     "build": "tsup",
     "migrate": "tsup src/db/migrate.ts --onSuccess \"node dist/migrate.js\"",
+    "seed": "tsup src/db/seed.ts --onSuccess \"node dist/seed.js\"",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src/",

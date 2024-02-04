@@ -3,37 +3,22 @@ import type {
   Request,
   NextFunction,
 } from 'express';
-import { eq } from 'drizzle-orm';
-
 import type {
   ParamWithId,
   EmptyObject,
 } from '../../types';
-import {
-  recipeIngredients,
-  recipes,
-  ingredients,
-} from '../../db/schema';
-import { db } from '../../db';
-
 import { filterAsync } from '../../utilities/asyncFilter';
 
 import type {
   InsertRecipeType, Recipe, UpdateRecipeType,
 } from './recipes.models';
+import { recipesDao } from './recipes.dao';
+import { ingredientsDao } from '../ingredients/ingredients.dao';
+import { recipeIngredientsDao } from '../recipeIngredients/recipeIngredients.dao';
 
 export async function findAll(_: Request, res: Response<Recipe[]>, next: NextFunction) {
   try {
-    const allRecipes = await db.query.recipes.findMany({
-      with: {
-        ingredients: {
-          columns: {
-            ingredientId: true,
-            amount: true,
-          },
-        },
-      },
-    });
+    const allRecipes = await recipesDao.getAllRecipes();
 
     res.json(allRecipes);
   } catch (error) {
@@ -52,7 +37,7 @@ export async function createOne(
       ...rest
     } = req.body;
 
-    const [recipesWithName] = await db.select().from(recipes).where(eq(recipes.name, rest.name));
+    const recipesWithName = await recipesDao.getRecipeByName(rest.name);
 
     if (recipesWithName) {
       res.status(409);
@@ -60,10 +45,7 @@ export async function createOne(
     }
 
     const recipeIngredientsThatDontExist = await filterAsync(recipeIngredientList, async (recipeIngredient) => {
-      const [ingredientRecord] = await db
-        .select()
-        .from(ingredients)
-        .where(eq(ingredients.id, recipeIngredient.ingredientId));
+      const ingredientRecord = await ingredientsDao.getIngredientById(recipeIngredient.ingredientId);
 
       return ingredientRecord === undefined;
     });
@@ -78,12 +60,11 @@ export async function createOne(
       );
     }
 
-
-    const [insertedRecipe] = await db.insert(recipes).values({ ...rest }).returning();
+    const insertedRecipe = await recipesDao.createRecipe(rest);
 
     if (!insertedRecipe) {
       res.status(500);
-      throw new Error('Unable to create recipe.');
+      throw new Error('Unable to create recipe. Try again later.');
     }
 
     const recipeIngredientsToInsert = recipeIngredientList.map((recipeIngredient) => ({
@@ -91,19 +72,9 @@ export async function createOne(
       recipeId: insertedRecipe.id,
     }));
 
-    await db.insert(recipeIngredients).values(recipeIngredientsToInsert);
+    await recipeIngredientsDao.createRecipeIngredients(recipeIngredientsToInsert);
 
-    const [insertedRecipeWithIngredients] = await db.query.recipes.findMany({
-      where: eq(recipes.id, insertedRecipe.id),
-      with: {
-        ingredients: {
-          columns: {
-            ingredientId: true,
-            amount: true,
-          },
-        },
-      },
-    });
+    const insertedRecipeWithIngredients = await recipesDao.getRecipeWithIngredientsById(insertedRecipe.id);
 
     res.json(insertedRecipeWithIngredients);
   } catch (error) {
@@ -119,24 +90,14 @@ export async function findOne(
   try {
     const paramId = Number(req.params.id);
 
-    const [result] = await db.query.recipes.findMany({
-      where: eq(recipes.id, paramId),
-      with: {
-        ingredients: {
-          columns: {
-            ingredientId: true,
-            amount: true,
-          },
-        },
-      },
-    });
+    const recipe = await recipesDao.getRecipeWithIngredientsById(paramId);
 
-    if (!result) {
+    if (!recipe) {
       res.status(404);
       throw new Error(`Recipe with id "${paramId}" not found.`);
     }
 
-    res.json(result);
+    res.json(recipe);
   } catch (error) {
     next(error);
   }
@@ -155,7 +116,7 @@ export async function updateOne(
       ...rest
     } = req.body;
 
-    const [recipeToBeUpdated] = await db.select().from(recipes).where(eq(recipes.id, paramId));
+    const recipeToBeUpdated = await recipesDao.getRecipeById(paramId);
 
     if (!recipeToBeUpdated) {
       res.status(404);
@@ -163,9 +124,9 @@ export async function updateOne(
     }
 
     if (rest.name) {
-      const [recipesWithName] = await db.select().from(recipes).where(eq(recipes.name, rest.name));
+      const recipeWithName = await recipesDao.getRecipeByName(rest.name);
 
-      if (recipesWithName && recipesWithName.id !== paramId) {
+      if (recipeWithName && recipeWithName.id !== paramId) {
         res.status(409);
         throw new Error(`Unable to update recipe with name "${rest.name}" that already exists.`);
       }
@@ -173,10 +134,7 @@ export async function updateOne(
 
     if (recipeIngredientList) {
       const recipeIngredientsThatDontExist = await filterAsync(recipeIngredientList, async (recipeIngredient) => {
-        const [ingredientRecord] = await db
-          .select()
-          .from(ingredients)
-          .where(eq(ingredients.id, recipeIngredient.ingredientId));
+        const ingredientRecord = await ingredientsDao.getIngredientById(recipeIngredient.ingredientId);
 
         return ingredientRecord === undefined;
       });
@@ -195,27 +153,14 @@ export async function updateOne(
           recipeId: paramId,
         }));
 
-        await db.delete(recipeIngredients).where(eq(recipeIngredients.recipeId, paramId));
-        await db.insert(recipeIngredients).values(recipeIngredientsToInsert);
+        await recipeIngredientsDao.deleteRecipeIngredientByRecipeId(paramId);
+        await recipeIngredientsDao.createRecipeIngredients(recipeIngredientsToInsert);
       }
     }
 
-    await db
-      .update(recipes)
-      .set({ ...rest })
-      .where(eq(recipes.id, paramId));
+    await recipesDao.updateRecipeById(rest, paramId);
 
-    const [updatedRecipeWithIngredients] = await db.query.recipes.findMany({
-      where: eq(recipes.id, paramId),
-      with: {
-        ingredients: {
-          columns: {
-            ingredientId: true,
-            amount: true,
-          },
-        },
-      },
-    });
+    const updatedRecipeWithIngredients = await recipesDao.getRecipeWithIngredientsById(paramId);
 
     res.json(updatedRecipeWithIngredients);
   } catch (error) {
@@ -231,15 +176,15 @@ export async function deleteOne(
   try {
     const paramId = Number(req.params.id);
 
-    const recipeToBeDeleted = await db.select().from(recipes).where(eq(recipes.id, paramId));
+    const recipeToBeDeleted = recipesDao.getRecipeById(paramId);
 
     if (!recipeToBeDeleted) {
       res.status(404);
       throw new Error(`Recipe with id ${paramId} not found.`);
     }
 
-    await db.delete(recipeIngredients).where(eq(recipeIngredients.recipeId, paramId));
-    await db.delete(recipes).where(eq(recipes.id, paramId));
+    await recipeIngredientsDao.deleteRecipeIngredientByRecipeId(paramId);
+    await recipesDao.deleteRecipeById(paramId);
 
     res.status(204).json();
   } catch (error) {
