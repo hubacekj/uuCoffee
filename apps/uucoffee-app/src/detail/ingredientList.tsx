@@ -56,12 +56,12 @@ function IngredientList(props) {
     onClick={() => props.deleteFunction(index)}><Icon size={1} path={mdiPlaylistRemove} /></Button>);
 
   const plusButton = (<Button
-    style={{ padding: "4px", paddingTop: "1px" }}
+    style={{ padding: "4px", paddingTop: "1px", marginInline: "5px"  }}
     variant="outline-success"
     onClick={() => setPortionMultiplier(portionMultiplier + 1)}
     disabled={props.isUpdate}><Icon size={1} path={mdiPlus} /></Button>);
   const minusButton = (<Button
-    style={{ padding: "4px", paddingTop: "1px" }}
+    style={{ padding: "4px", paddingTop: "1px", marginInline: "5px" }}
     variant="outline-success"
     onClick={() => setPortionMultiplier(portionMultiplier - 1)}
     disabled={props.isUpdate || portionMultiplier <= 1}><Icon size={1} path={mdiMinus} /></Button>);
@@ -77,7 +77,10 @@ function IngredientList(props) {
   return (
     <>
       <div className={styles.controlledRow} >
-        Počet porcí: {plusButton}<b>{portionMultiplier}</b>{minusButton}Objem porce: {props.isUpdate ? (<FormControl type="number" value={props.portionAmount} onChange={(event) => props.updatePortionAmount(parseInt(event.target.value) <= 1 ? 1 : parseInt(event.target.value))} />) : (props.portionAmount)} ml
+        Počet porcí: {plusButton}<b>{portionMultiplier}</b>{minusButton}
+      </div>
+      <div className={styles.controlledRow}>
+        Objem porce: {props.isUpdate ? (<FormControl type="number" value={props.portionAmount} onChange={(event) => props.updatePortionAmount(parseInt(event.target.value) <= 1 ? 1 : parseInt(event.target.value))} />) : (props.portionAmount)} ml
       </div>
       <Table>
         <thead>
