@@ -94,14 +94,15 @@ function IngredientList(props) {
               //format prep time
               const ingData = ingredientCall.data.filter(ing => ing.id === ingredient.ingredientId)[0];
               const amount = (props.isUpdate ? <FormControl type="number" value={ingredient.amount} onChange={(event) => props.updateFunction(index, { amount: event.target.value <= 1 ? 1 : parseInt(event.target.value)})} /> : ingredient.amount * portionMultiplier);
+              const unit = ingData.unit === 'mililiters' ? 'ml' : 'g';
               return (
                 <tr key={ingredient.ingredientId}>
                   <td>{props.isUpdate ? <Form.Select as="elementType" onChange={(event) => props.updateFunction(index, { ingredientId: parseInt(event.target.value) })}>
                     <option value={ingredient.ingredientId}>{ingData.name}</option>
                     {ingredientOptions}
                   </Form.Select> : ingData.name}</td>
-                  <td>{amount} {!props.isUpdate && ingData.unit}</td>
-                  <td>{props.isUpdate && ingData.unit}</td>
+                  <td>{amount} {!props.isUpdate && unit}</td>
+                  <td>{props.isUpdate && unit}</td>
                   <td>{props.isUpdate && deleteButton(index)}</td>
                 </tr>
               );
